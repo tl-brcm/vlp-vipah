@@ -1,0 +1,20 @@
+sspfbService:
+  ingressLogsIncluded: false
+fluent-bit:
+  customConfig:
+    outputs:
+    - tags:
+      - ssp_log
+      - ssp_tp_log
+      - ssp_audit
+      template: | 
+          Name es
+          Host  elasticsearch-es-http.logging.svc
+          Port  9200
+          tls On
+          tls.verify Off
+          Suppress_Type_Name On
+          Replace_Dots On
+          Index ${tag}
+          HTTP_User kibana
+          HTTP_Passwd ${KIBANA_PASSWORD}

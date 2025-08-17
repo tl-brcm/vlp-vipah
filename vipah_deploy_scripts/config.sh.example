@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# This is an example configuration file.
+#
+# Please copy this file to "config.sh" and fill in the values for your environment.
+# The "config.sh" file is ignored by git, so your secrets will not be committed.
+
+# Docker-Registry Credential
+export DOCKER_USERNAME="<your-docker-username>"
+export DOCKER_PASSWORD="<your-docker-password>"
+export DOCKER_EMAIL="<your-docker-email>"
+
+# SSP Access Credential
+export SSP_USERNAME="<your-ssp-username>"
+export SSP_CREDENTIAL="<your-ssp-credential>"
+
+# GCS Account Email Address
+export User_Account="<your-gcp-email-account>"
+
+# Allowed origin for CORS
+export ALLOWED_ORIGIN="<your-allowed-origin>"
+
+# Kibana password
+export KIBANA_PASSWORD="<your-kibana-password>"
+
+# LDAP bind password
+export LDAP_BIND_PASSWORD="<your-ldap-bind-password>"
+
+

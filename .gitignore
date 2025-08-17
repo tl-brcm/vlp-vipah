@@ -1,0 +1,25 @@
+# macOS files
+._*
+.DS_Store
+
+# Archives
+*.zip
+*.tgz
+
+# Backup and temporary files
+*override-*.yaml
+*config-*.yaml
+*failed-manifest.yaml
+*override2.yaml
+suggested_dns_changes.txt
+mek-secret_backup.yaml
+commandlist.txt
+.__
+*_backup.yaml
+*~
+#*#
+
+# Secrets
+secrets.txt
+clean_secrets.sh
+vipah_deploy_scripts/config.sh

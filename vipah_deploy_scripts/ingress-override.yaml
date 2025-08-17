@@ -1,0 +1,11 @@
+USER-SUPPLIED VALUES:
+USER-SUPPLIED VALUES: null
+controller:
+  allowSnippetAnnotations: true
+  config:
+    annotation-value-word-blocklist: load_module,lua_package,_by_lua,location,root,proxy_pass,serviceaccount,{,},',\
+    use-forwarded-headers: "true"
+  service:
+    externalTrafficPolicy: Local
+imagePullSecrets:
+- name: docker-hub-reg-pullsecret

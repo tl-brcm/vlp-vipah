@@ -1,0 +1,10 @@
+[
+  {
+      "name": "accessTokenExpirySecs",
+      "value": "3600"
+  },
+  {
+      "name": "allowedOrigins",
+      "value": "https://[SA_FQDN]"
+  }
+]

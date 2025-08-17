@@ -1,0 +1,7 @@
+USER-SUPPLIED VALUES:
+ssp:
+  deployment:
+    size: demo
+  global:
+    debugging:
+      enabled: true

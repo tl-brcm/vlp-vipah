@@ -1,0 +1,9 @@
+{
+    "Operations": [
+        {
+            "op": "add",
+            "path": "/rules/[id eq \"[RuleId]\"]/conditions/principal/group",
+            "value": "Admin"
+        }
+    ]
+}

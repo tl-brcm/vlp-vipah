@@ -1,0 +1,9 @@
+{
+    "Operations": [
+        {
+            "op": "add",
+            "path": "/rules/[id eq \"52b43cc1-9ce9-457a-a848-379de295e594\"]/conditions/principal/group",
+            "value": "Admin"
+        }
+    ]
+}
