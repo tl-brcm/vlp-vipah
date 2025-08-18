@@ -1,7 +1,146 @@
-USER-SUPPLIED VALUES:
+global:
+  debugging:
+      enabled: true
+  ssp:
+    global:
+      env:
+        # Default JVM sizing for all JVM pods (can be overridden per-service)
+        # Leaves ~40% headroom for metaspace, code cache, threads, JNI, TLS, etc.
+        jvmOpts: >-
+          -XX:+UseContainerSupport
+          -XX:MaxRAMPercentage=60
+          -XX:InitialRAMPercentage=30
+          -XX:MaxMetaspaceSize=256m
+          -XX:+ExitOnOutOfMemoryError
+
 ssp:
+  # ---- JVM services with request==limit (add headroom + jvmOpts) ----
   deployment:
     size: demo
-  global:
-    debugging:
-      enabled: true
+  availability:
+    resources:
+      requests:
+        memory: 1Gi
+      limits:
+        memory: 2Gi
+
+  dbInitializer:
+    resources:
+      requests:
+        memory: 1Gi
+      limits:
+        memory: 2Gi
+
+  vaultSecretsInitializer:
+    resources:
+      requests:
+        memory: 1Gi
+      limits:
+        memory: 2Gi
+
+  uiHelperSvc:
+    resources:
+      requests:
+        memory: 1Gi
+      limits:
+        memory: 2Gi
+
+  factor:
+    # Was req=2Gi / limit=2Gi with -Xmx1Gi (too tight, native + metaspace can OOM)
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=60
+        -XX:InitialRAMPercentage=30
+        -XX:MaxMetaspaceSize=256m
+        -XX:+ExitOnOutOfMemoryError
+    resources:
+      requests:
+        memory: 2Gi
+      limits:
+        memory: 3Gi
+
+  geolocation:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=60
+        -XX:InitialRAMPercentage=30
+        -XX:MaxMetaspaceSize=256m
+        -XX:+ExitOnOutOfMemoryError
+    resources:
+      requests:
+        memory: 2Gi
+      limits:
+        memory: 3Gi
+
+  iarisk:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=60
+        -XX:InitialRAMPercentage=30
+        -XX:MaxMetaspaceSize=256m
+        -XX:+ExitOnOutOfMemoryError
+    resources:
+      requests:
+        memory: 2Gi
+      limits:
+        memory: 3Gi
+
+  admin:
+    # Already had MaxRAMPercentage=75 (a bit aggressive); align with default
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=60
+        -XX:InitialRAMPercentage=30
+        -XX:MaxMetaspaceSize=256m
+        -XX:+ExitOnOutOfMemoryError
+    resources:
+      requests:
+        memory: 2Gi
+      limits:
+        memory: 3Gi
+
+  # ---- JVM services that already had 1Gi/2Gi: keep sizing, add jvm flags ----
+  azserver:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=60
+        -XX:InitialRAMPercentage=30
+        -XX:MaxMetaspaceSize=256m
+        -XX:+ExitOnOutOfMemoryError
+
+  identity:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=60
+        -XX:InitialRAMPercentage=30
+        -XX:MaxMetaspaceSize=256m
+        -XX:+ExitOnOutOfMemoryError
+
+  authMgr:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=60
+        -XX:InitialRAMPercentage=30
+        -XX:MaxMetaspaceSize=256m
+        -XX:+ExitOnOutOfMemoryError
+
+  # ---- iaservice had Xms/Xmx=2Gi with req=3Gi/limit=3Gi: give more headroom ----
+  iaservice:
+    # Keep your explicit Xmx=2Gi; raise limit so native/metaspace/thread stacks have space
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 4Gi
+    env:
+      # You can keep javaXms/javaXmx as-is; add safety flags
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:+ExitOnOutOfMemoryError
