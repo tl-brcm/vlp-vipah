@@ -10,6 +10,9 @@ source ${DIRNAME}/0.gks_env.sh
 
 NC="\033[0m"
 
+INGRESS_VERSION_NEW="4.12.2"
+INGRESS_VERSION_OLD="4.0.16"
+
 function print_color(){
 
   case $1 in
@@ -30,9 +33,9 @@ do
         print_color "default" ""
         print_color "red"  "  Deploy Ingress Controller "
         print_color "default" ""
-        print_color "green" "1. Ingress 4.11.2 deploy  "    
-        print_color "green" "2. Ingress 4.0.16 deploy "
-        print_color "blue" "3. Upgrade Ingress 4.11.2 "
+        print_color "green" "1. Ingress ${INGRESS_VERSION_NEW} deploy  "    
+        print_color "green" "2. Ingress ${INGRESS_VERSION_OLD} deploy "
+        print_color "blue" "3. Upgrade Ingress ${INGRESS_VERSION_NEW} "
 
         print_color "default" ""
         print_color "default" "####################################################"
@@ -44,21 +47,21 @@ do
 
         case $choice in
 
-                1) print_color "green" "Ingress 4.11.2 deploy"
+                1) print_color "green" "Ingress ${INGRESS_VERSION_NEW} deploy"
                         ingress_action="install"
-                        ingress_version="4.11.2"
+                        ingress_version="${INGRESS_VERSION_NEW}"
 			ingress_name_space="ingress"
                         break
                         ;; 
-                2) print_color "green" "Ingress 4.0.16 deploy"
+                2) print_color "green" "Ingress ${INGRESS_VERSION_OLD} deploy"
                         ingress_action="install"
-                        ingress_version="4.0.16"
+                        ingress_version="${INGRESS_VERSION_OLD}"
 			ingress_name_space="ingress"
                         break
                         ;;
-                3) print_color "green" "Upgrade Ingress 4.11.2"
+                3) print_color "green" "Upgrade Ingress ${INGRESS_VERSION_NEW}"
                         ingress_action="upgrade"
-                        ingress_version="4.11.2"
+                        ingress_version="${INGRESS_VERSION_NEW}"
 			ingress_name_space="ingress"
                         break
                         ;;
@@ -86,6 +89,7 @@ then
         --set controller.allowSnippetAnnotations=true \
 	--set-string controller.config.annotation-value-word-blocklist="load_module\,lua_package\,_by_lua\,location\,root\,proxy_pass\,serviceaccount\,{\,}\,\'\,\\\\" \
         --set controller.service.externalTrafficPolicy="Local" \
+        --set controller.config.annotations-risk-level=Critical \
 	--version=${ingress_version}
 
  

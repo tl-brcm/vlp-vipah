@@ -85,7 +85,7 @@ then
 	--set ingress.host="${SA_FQDN}" \
 	--set ingress.tls.host="${SA_FQDN}" \
 	--set ingress.tls.secretName=sampleapp-general-tls \
-	--set ssp-symantec-dir.service.type=nodePort \
+	--set ssp-symantec-dir.service.type=NodePort \
 	--set ssp-symantec-dir.service.servicePort=389 \
 	--set global.registry.existingSecrets[0].name="ssp-registrypullsecret" \
         --version=${sample_app_version} \
