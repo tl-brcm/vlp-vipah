@@ -39,7 +39,7 @@ echo "Found K3s master at: ${MASTER_IP}"
 # ===== 2) Retrieve Join Token from Master =====
 echo "Fetching cluster token from master node..."
 TOKEN_FILE="/tmp/node-token"
-if ! scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "${MASTER_USER}@${MASTER_IP}:/var/lib/rancher/k3s/server/node-token" "${TOKEN_FILE}"; then
+if ! scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "${MASTER_USER}@${MASTER_IP}:/home/config/node-token" "${TOKEN_FILE}"; then
     echo "Failed to retrieve token from master."
     echo "Please verify the username ('${MASTER_USER}') and ensure passwordless SSH is configured."
     exit 1

@@ -30,8 +30,10 @@ curl -sfL https://get.k3s.io | sh -s - server \
   --disable=traefik \
   --node-ip "${NODE_IP}"
 
-# Make the node-token readable by all users for easier worker node joining.
-sudo chmod 644 /var/lib/rancher/k3s/server/node-token
+# Copy the node-token to the config user's home directory for easy access by workers.
+# Note: This assumes the user 'config' exists on the master node.
+sudo cp /var/lib/rancher/k3s/server/node-token /home/config/node-token
+sudo chown config:config /home/config/node-token
 
 # ===== 4) Prepare kubeconfig for your user =====
 mkdir -p "${HOME}/.kube"
