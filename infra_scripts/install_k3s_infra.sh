@@ -30,6 +30,9 @@ curl -sfL https://get.k3s.io | sh -s - server \
   --disable=traefik \
   --node-ip "${NODE_IP}"
 
+# Make the node-token readable by all users for easier worker node joining.
+sudo chmod 644 /var/lib/rancher/k3s/server/node-token
+
 # ===== 4) Prepare kubeconfig for your user =====
 mkdir -p "${HOME}/.kube"
 sudo cp /etc/rancher/k3s/k3s.yaml "${HOME}/.kube/k3s.yaml"
