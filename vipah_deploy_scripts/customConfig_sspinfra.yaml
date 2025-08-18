@@ -17,4 +17,4 @@ fluent-bit:
           Replace_Dots On
           Index ${tag}
           HTTP_User kibana
-          HTTP_Passwd ${KIBANA_PASSWORD}
+          HTTP_Passwd changeme

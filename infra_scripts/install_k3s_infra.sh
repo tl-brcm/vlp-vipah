@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ===== 0) Basics & packages =====
-sudo apt-get update -y
-sudo apt-get install -y curl ca-certificates gnupg lsb-release bash-completion net-tools jq
+# ===== 0) Common Setup =====
+# Source the common setup script for package installation
+source "$(dirname "$0")/common_setup.sh"
 
 # ===== 1) Install kubectl (stable series) =====
 # Docs: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/

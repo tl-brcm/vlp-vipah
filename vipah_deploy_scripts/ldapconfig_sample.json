@@ -15,7 +15,7 @@
     "statusEncoding": "siteminder",
     "useMemberOf": "true",
     "bindDN": "cn=admin,o=democorp,c=US",
-    "bindPassword": "${LDAP_BIND_PASSWORD}",
+    "bindPassword": "password",
     "bindPasswordSecretAlias": "",
     "userLoginIdAttributeMappingName":"user_loginid",
     "groupNameAttributeMappingName":"name",

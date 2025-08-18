@@ -20,10 +20,4 @@ export User_Account="<your-gcp-email-account>"
 # Allowed origin for CORS
 export ALLOWED_ORIGIN="<your-allowed-origin>"
 
-# Kibana password
-export KIBANA_PASSWORD="<your-kibana-password>"
-
-# LDAP bind password
-export LDAP_BIND_PASSWORD="<your-ldap-bind-password>"
-
 
