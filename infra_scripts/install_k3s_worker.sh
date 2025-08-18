@@ -57,11 +57,11 @@ echo "Successfully retrieved cluster token."
 
 # ===== 3) Install k3s Agent =====
 echo "Installing k3s agent and joining the cluster..."
-export K3S_URL="https://{MASTER_IP}:6443"
+export K3S_URL="https://"${MASTER_IP}":6443"
 export K3S_TOKEN
 export INSTALL_K3S_CHANNEL=stable
 
-curl -sfL https://get.k3s.io | sh -
+curl -sfL https://get.k3s.io | sh -s - --with-node-id
 
 # ===== 4) Verification =====
 echo "Waiting for 15 seconds for the agent to register..."
