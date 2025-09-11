@@ -199,7 +199,7 @@ EOF
 	  --set ssp.ingress.tls.secretName=ssp-general-tls \
 	  --set ssp.global.ssp.registry.existingSecrets[0].name=ssp-registrypullsecret \
 	  --set hazelcast-enterprise.image.pullSecrets[0]=ssp-registrypullsecret \
-	  --set ssp.deployment.size="demo" \
+	  --set ssp.deployment.size="custom" \
 	  --set hazelcast-enterprise.cluster.memberCount=1 \
           --version=${ssp_version} \
           --timeout '20m' \
