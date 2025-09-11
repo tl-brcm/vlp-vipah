@@ -1,0 +1,878 @@
+# Default values for ssp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+nameOverride: ""
+fullnameOverride: ""
+# SSP Hazelcast subchart config
+hazelcast-enterprise:
+  hazelcast:
+    yaml:
+      hazelcast:
+        map:
+          default:
+            time-to-live-seconds: 600
+            max-idle-seconds: 0
+          websocket-responses:
+            time-to-live-seconds: 300
+    existingConfigMap: ssp-hazelcast-config
+    javaOpts: "-Djava.io.tmpdir=/data/custom"
+  enabled: true
+  fullnameOverride: ssp-hazelcast-entp
+  nameOverride: hazelcast-entp
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: hazelcast-entp
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: hazelcast-entp
+  labels:
+    imageTag: 5.3.5-m15-p4
+  annotations: {}
+  commonLabels:
+    ssp-prometheus-metrics: metrics
+  podLabels:
+    configMap: "00001"
+  service:
+    labels: {}
+    annotations: {}
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+  image:
+    #    repository: "hazelcast/hazelcast-enterprise"
+    repository: "securityservices.packages.broadcom.com/hazelcast-enterprise"
+    tag: 5.3.5-m15-p4
+    # HC uses imageDigest only if umage tag is empty (pass tag as "")
+    digest: "sha256:28221ad0b3117e7fc3077fe3e45463823b207ac4b916b55bea11f5b52610f5fc"
+    pullPolicy: Always
+    #    pullSecrets: []
+    pullSecrets:
+      - ssp-hazelcast-registrypullsecret
+    imageDigest: "sha256:28221ad0b3117e7fc3077fe3e45463823b207ac4b916b55bea11f5b52610f5fc"
+  cluster:
+    # memberCount is the number of Hazelcast members
+    memberCount: 3
+  rbac:
+    create: false
+    useClusterRole: false
+  serviceAccount:
+    create: true
+    name: ""
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 4Gi
+      cpu: 2000m
+  podDisruptionBudget:
+    minAvailable: 1
+  securityContext:
+    readOnlyRootFilesystem: true
+    runAsNonRoot: 1
+  customVolume:
+    emptyDir: {}
+  secretsMountName: "hazelcast-ssp-keys-isk"
+  livenessProbe:
+    port: 5703
+  readinessProbe:
+    port: 5703
+  mancenter:
+    # enabled is a flag to enable Management Center application
+    enabled: false
+    secretsMountName: "hazelcast-ssp-keys-isk"
+    ingress:
+      enabled: true
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 100m
+      limits:
+        memory: 4Gi
+        cpu: 2000m
+    podDisruptionBudget:
+    minAvailable: 1
+    metrics:
+      enabled: false
+    securityContext:
+      readOnlyRootFilesystem: true
+    customVolume:
+      emptyDir: {}
+    image:
+      repository: "securityservices.packages.broadcom.com/hazelcast/management-center"
+      tag: 5.1.3-ssl-02
+      pullPolicy: Always
+      pullSecrets:
+        - ssp-hazelcast-registrypullsecret
+      imageDigest: ""
+      digest: "sha256:5be063e2e59e6cfe33fd693ea218f816001df69a0c9f9ef3ba450262bae33a93"
+    service:
+      annotations: {}
+      httpsPort: 443
+      port: 8080
+      type: ClusterIP
+      labels:
+        ssp-prometheus-metrics: metrics
+    persistence:
+      accessModes:
+        - ReadWriteOnce
+      enabled: false
+      size: 48Gi
+    javaOpts: "-Dhazelcast.mc.prometheusExporter.enabled=true -Djava.io.tmpdir=/data/custom"
+    existingConfigMap: ssp-hazelcast-mancenter-config
+# End of SSP Hazelcast subchart config
+global:
+  useImageDigest: false
+  additionalLabels: {}
+  additionalAnnotations: {}
+  # Enable to support helm's --dry-run option, or helm template.
+  helmOfflineMode: false
+  #If dnsPolicy is not explicitly specified, then "ClusterFirst" is used.
+  dnsPolicy: ""
+  #When a Pod's dnsPolicy is set to "None", the dnsConfig field has to be specified
+  dnsConfig: {}
+  proxy:
+    enabled: false
+    url: "https://httpproxy.example.com:443"
+    # if the proxy has authentication enabled, create a secret with username/password: kubectl create secret generic proxy-credentials --from-literal=username='<username>' --from-literal=password='<password>'
+    authEnabled: false
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+ssp:
+  #deployment.size indicates the size of the deployment. Default value is custom. Supported values demo (auth/min - 60), small (auth/min - 1200), medium (auth/min - 4000), large (auth/min - 8000), custom (auth/min - as defined by customer)
+  deployment:
+    size: "custom"
+    dbinitlog-saved-confirmed: ""
+    dataseedlog-saved-confirmed: ""
+  testing:
+    enableJacoco: false
+    ## Folder on the host machine where jacoco agent jar is saved.
+    ## jacoco agent jar should be named as jacoco-agent.jar
+    ## The output of code coverage will be saved to this folder.
+    jacocoIoPath: /jacoco
+  global:
+    azure:
+      useWorkloadIdentity: false
+    drSite: false
+    skipCreateUpstreamCaSslSecret: false
+    skipCreateHazelcastSslSecret: false
+    forceIngressHostOverride: false
+    skipIngressHostValidation: false
+    imagePullPolicy: Always
+    nearCacheTimeInSecs: "30"
+    bootstrapmetadata:
+      existingSecret: ""
+    existingServiceAccount: ""
+    existingDataseedSATokenSecret: ""
+    env:
+      aws_sts_regional_endpoints: ""
+      jvmOpts: ""
+    ignoreIskSslValidation:
+      enabled: false
+    securityContext:
+      runAsUser: 65534
+      runAsGroup: 65534
+      fsGroup: 1337
+    keepStartupLogLevel:
+      enabled: false
+    tracing:
+      enabled: false
+      agentHost: jaeger-operator-jaeger-agent.tracing.svc
+      agentPort: "6831"
+    seedData:
+      disclosureExpiryHours: "168"
+      defaultTenant:
+        seededOnInstall: true
+        seededOnUpgrade: true
+        adminUser:
+          seededOnInstall: true
+          seededOnUpgrade: false
+        adminClient:
+          seededOnInstall: true
+          disclosedOnInstall: true
+          disclosedOnUpgrade: false
+      systemClient:
+        disclosedOnInstall: true
+        disclosedOnUpgrade: false
+      infraClient:
+        disclosedOnInstall: true
+        disclosedOnUpgrade: false
+    scaling:
+      cpuTargetAvgUtilization: 80
+    pdb:
+      enabled: false
+    ssp:
+      registry:
+        imageRepositoryBase: securityservices.packages.broadcom.com/
+        existingSecrets: []
+        # fill in the paramters below to have the chart create the registry secret
+        # this section is ignored if ssp.global.ssp.registry.existingSecrets is specified
+        url: https://securityservices.packages.broadcom.com/
+        credentials:
+          username: ""
+          password: ""
+          email: ""
+    db:
+      maxPoolSizeRead: "200"
+      maxPoolSizeWrite: "200"
+      minIdleSize: "5"
+      connectionTimeoutMillis: "30000"
+      idleTimeoutMillis: "12000"
+      maxLifetimeMillis: "1800000"
+    ldap:
+      # LDAP pool values
+      #   poolPrefSize = # of active + idle connections
+      #   poolDebug = "none", "all", "fine"
+      #   poolKeepAlive = "on", "off"
+      poolMaxSize: 0
+      poolPrefSize: 0
+      poolTimeoutMillis: 60000
+      poolInitSize: 1
+      poolDebug: "none"
+      poolKeepAlive: "off"
+    http:
+      maxHttpHeaderSize: "32768"
+    cache:
+      suffix: "cluster.local"
+      # discoveryMode = if provided, must be "kubeapi" or "dns". Otherwise defaults to "kubeapi" if hazelcast-enterprise.rbac.create is true, otherwise defaults to "dns"
+      discoveryMode: ""
+    monitoring:
+      prometheusOperator:
+        serviceMonitor:
+          enabled: true
+          interval: 30s
+          additionalLabels: {}
+    debugging:
+      enabled: false
+      jvmOpts: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address="
+      # "-Xdebug -Xrunjdwp:server=y,transport=dt_socket,suspend=n,address=9081
+      # address=*:
+    rest:
+      # used for service to OPA comms
+      opaPoolMaxSize: "300"
+      opaPoolTimeoutMillis: "2000"
+      opaRequestTimeoutMillis: "10000"
+      # used for service to IA Risk comms
+      riskPoolMaxSize: "300"
+      riskPoolTimeoutMillis: "2000"
+      riskRequestTimeoutMillis: "60000"
+      # used for service to geolocation comms
+      geolocationPoolMaxSize: "300"
+      geolocationPoolTimeoutMillis: "2000"
+      geolocationRequestTimeoutMillis: "60000"
+    resilience:
+      circuitbreaker:
+        minimumNumberOfCalls: 1000
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 1000
+        waitDurationInOpenStateMillis: 1000
+        permittedNumberOfCallsInHalfOpenState: 100
+        failureRateThreshold: 50
+      retry:
+        maxAttempts: 3
+        waitDurationMillis: 500
+    internal:
+      encryptionProvider:
+        testMode:
+          enabled: false
+    idbridge:
+      #Default for the max number of seconds to wait for a response from an idbridge agent.
+      requestTimeoutMillis: 60000
+      #Controls the number of threads handling requests in queue.
+      queueHandldersThreadCount: 10
+      #Controls the Algorithm used when deciding which socket to use in the case there are multiple sockets available for the site.
+      loadBalancingAlgo: "FIRST_FOUND"
+      #Controls the keepalive ping interval initiated by the server to the connected idbridge agents.
+      serverKeepaliveIntervalSecs: 300
+      #Controls the maximum age of queued request, after which the request will be ignored and discarded.
+      requestTtlSecs: 60
+      #Controls the time a response is going to wait to be picked up by the requesting pod before being discarded.
+      responseTtlSecs: 60
+      #Controls the number of threads polling for the response asynchronously
+      responseMapPollingThreadCount: 2
+      #Controls the ingress timeout for WebSocket
+      webSocketTimeoutSecs: 3600
+    vault:
+      enabled: false
+      type: ""
+    pessimisticLock:
+      retryCount: 3
+      retryIntervalMillis: 100
+  featureFlags:
+    dataseed:
+      enabled: true
+      skipSchemaInit: false
+      logLevel: INFO
+    policyupdatecheck:
+      enabled: false
+    scheduler:
+      enabled: true
+    # DONOT REMOVE THIS FLAG. THIS IS BEING USED IN AUTHENTICATION FLOW TO DETERMINE IF THE SSPRISK SERVICE IS DEPLOYED
+    iarisk:
+      enabled: true
+    adminconsole:
+      enabled: true
+    systemconsole:
+      enabled: false
+    selfserviceconsole:
+      enabled: true
+    swagger:
+      enabled: false
+    uiframe:
+      option: "UNSET"
+    custommetrics:
+      enabled: true
+    signinSupportsLegacyBrowser:
+      enabled: false
+    availabilityMetrics:
+      enabled: false
+      maxConnectionTimeoutInSecs: 300
+    customLocationData:
+      enabled: false
+    idbridge:
+      enabled: false
+    riskpolicies:
+      enabled: false
+    onBehalfOfPrivilegedOperations:
+      enabled: false
+  ingress:
+    # enabled = true | false
+    enabled: true
+    # type = "nginx" for nginx ingress controller or "openshiftroute" for openshift ingress controller with routes
+    type: nginx
+    ingressClassName: nginx
+    nginxClientHeaderBuffersNumber: "4"
+    nginxClientHeaderBufferSize: 64k
+    useNginxConfigSnippets:
+      enabled: true
+    #additional labels for ingress objects
+    additionalLabels: {}
+    additionalAnnotations: {}
+    proxySslVerifyDepth: 1
+    healthCheck:
+      enabled: false
+    # host is an fqdn iam.acme.com
+    host:
+    tls:
+      enabled: true
+      secretName: ssp-general-tls
+      host:
+    fullVanity:
+      enabled: false
+      hosts: []
+      # - host: abc.democorp.com
+      #   tlsSecretName: abc-cert
+      # - host: iam.acme.com
+      #   tlsSecretName: null
+    endUsersVanity:
+      enabled: false
+      ingressClassName:
+      #additional labels for ingress objects
+      additionalLabels: {}
+      additionalAnnotations: {}
+      allowScim: false
+      hosts: []
+      # - host: login.acme.com
+      #   tlsSecretName: acme-cert
+    # keep mgmt host and/or mgmt tls empty to use values from the main ingress section
+    mgmt:
+      enabled: true
+      ingressClassName:
+      #additional labels for ingress objects
+      additionalLabels: {}
+      additionalAnnotations: {}
+      host:
+      tls:
+        enabled: true
+        secretName:
+        host:
+    rateLimiting:
+      enabled: false
+      delayQueueSize: 100
+    openShiftRoute:
+      # isDefaultTenantInPath:false implies routes will use <defaultTenant>.<ssp-fqdn>/<defaultTenantPlaceholderInPath>, otherwise routing will use <ssp-fqdn>/<defaultTenant>
+      isDefaultTenantInPath: false
+      defaultTenant: default
+      defaultTenantPlaceholderInPath: common
+  db:
+    # existingSecret takes precedence over password
+    # if no db.existingSecret is passed in, then passed in db.password would be ignored unless db.serviceHost is also provided (indicating use of external db)
+    # if jdbcUrl is passed the serviceHost, servicePort, name and ldapContext will be ignored
+    jdbcUrl: ""
+    # if no jdbcUrl is passed in, then the serviceHost, servicePort, name, connection.type and ldapContext will be used to construct the JDBC url
+    serviceHost: ""
+    servicePort: "3306"
+    name: iamauth
+    user: iamauth
+    schema: iamauth
+    password: ""
+    type: mysql
+    existingSecret: ""
+    schemaAdminUser: ""
+    schemaAdminPassword: ""
+    existingSchemaAdminSecret: ""
+    connection:
+      # possible values jdbc or ldap.
+      type: jdbc
+    ldapContext: ""
+    ldapUser: ""
+    ldapPassword: ""
+    # Note:
+    # Set existingVaultFolder to contain the folder path where the files containing the database password are expected to be found.
+    # When specified, SSP will read the DB password files from the folder specified in this value and will not use the password secret.
+    #
+    # Expected password files with the following names:
+    # - 'db-password' (for read/write replicas),
+    # - 'read-db-password' (for read-only replicas),
+    # - when not found, the file 'mysql-password' would be read instead.
+    #
+    # Passwords will be reloaded from these files when changed.
+    existingVaultFolder: ""
+    existingSslSecret: ""
+    # possible sslMode value: DISABLED, PREFERRED, REQUIRED, VERIFY_CA, VERIFY_IDENTITY
+    sslMode: "REQUIRED"
+    jdbcOpts: ""
+    showSql:
+      enabled: false
+    readSchema:
+      enabled: false
+      # if jdbcUrl is passed the serviceHost, servicePort, name and ldapContext will be ignored
+      jdbcUrl: ""
+      # if no jdbcUrl is passed in, then the serviceHost, servicePort, name, connection.type and ldapContext will be used to construct the JDBC url
+      serviceHost: ""
+      servicePort: "3306"
+      name: iamauth
+      user: iamauth
+      schema: iamauth
+      password: ""
+      ldapContext: ""
+      ldapUser: ""
+      ldapPassword: ""
+  keys:
+    mek:
+      existingSecret: ""
+    isk:
+      existingSecret: ""
+  availability:
+    env:
+      appLogLevel: WARN
+      rootLogLevel: WARN
+      jvmOpts: ""
+    resources:
+      limits:
+        cpu: 400m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+  dbInitializer:
+    imageName: "ssp-db-initializer"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:5bd383ebe93450ea951f638adde9f2393a616386f7fe107f8b2c637b6126fb17"
+    logLevelFlyway: DEBUG
+    targetEnv: "default"
+    pauseOnFailureInMillis: ""
+    dbconn: "3"
+    env:
+      appLogLevel: INFO
+      rootLogLevel: WARN
+      jvmOpts: ""
+    resources:
+      limits:
+        cpu: 400m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+  vaultSecretsInitializer:
+    imageName: "ssp-vault-secrets-initializer"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:f791de78dea46b3f671bbfcb5451e81163282fffef0699f3c819aeec0cfc7978"
+    logLevel: INFO
+    pauseOnFailureInMillis: ""
+    env:
+      appLogLevel: INFO
+      rootLogLevel: WARN
+      jvmOpts: ""
+    resources:
+      limits:
+        cpu: 400m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+  uiHelperSvc:
+    imageName: "ui-helper-svc"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:8ea6ba3d01135a1c214069fee4a84687e476a2da69ad03b735691f9af879302c"
+    containerPort: "8089"
+    debugPort: "9089"
+    env:
+      appLogLevel: INFO
+      rootLogLevel: WARN
+      jvmOpts: ""
+    resources:
+      limits:
+        cpu: 400m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+  factor:
+    imageName: "factors-svc"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:41b91bcb050d3ee670fd854759e2678322be58a69cf9779848a956647dfe148c"
+    podReplicaCount: "2"
+    containerPort: "8080"
+    serviceType: ClusterIP
+    servicePort: "443"
+    debugPort: "9080"
+    env:
+      appLogLevel: INFO
+      rootLogLevel: WARN
+      jvmOpts: "-Xms1024m -Xmx1024m"
+      mdsServiceMode: prod
+      automationMode: prod
+      masterKey: SECRET
+      cacheTimeout: "5"
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+    scaling:
+      min: "2"
+      max: "2"
+  geolocation:
+    imageName: "geolocation-svc"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:97f493e561f825bf2e2514d977b77b4cbde79192ab119150f738fdd4e269687c"
+    podReplicaCount: "2"
+    containerPort: "8091"
+    serviceType: ClusterIP
+    servicePort: "443"
+    debugPort: "9085"
+    env:
+      appLogLevel: INFO
+      rootLogLevel: ERROR
+      jvmOpts: ""
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 400m
+        memory: 2Gi
+    scaling:
+      min: "2"
+      max: "2"
+  azserver:
+    imageName: "oidc-svc"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:fe3dbc6ce425ac42bdda068e9395dd1143e9de7e6937faf4a7b6df7c633ed301"
+    podReplicaCount: "2"
+    containerPort: "8085"
+    serviceType: ClusterIP
+    servicePort: "443"
+    debugPort: "9085"
+    env:
+      appLogLevel: INFO
+      rootLogLevel: WARN
+      jvmOpts: ""
+      maxHttpFormPostSize: "512KB"
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 1000m
+        memory: 1Gi
+    scaling:
+      min: "2"
+      max: "2"
+  identity:
+    imageName: "identity-svc"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:e53750c2648963966286d7e1a47b17e52461bd71aa26e7ecaf6e2dd652c8cba0"
+    podReplicaCount: "2"
+    containerPort: "8082"
+    serviceType: ClusterIP
+    servicePort: "443"
+    debugPort: "9082"
+    env:
+      appLogLevel: INFO
+      rootLogLevel: WARN
+      jvmOpts: ""
+      mdsServiceMode: prod
+      automationMode: prod
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 1000m
+        memory: 1Gi
+    scaling:
+      min: "2"
+      max: "2"
+  admin:
+    imageName: "admin-svc"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:0a600cb8e4b8522c4209903d911546185034bb22716e11d4a43dff55752b69ad"
+    podReplicaCount: "2"
+    containerPort: "8083"
+    serviceType: ClusterIP
+    servicePort: "443"
+    debugPort: "9083"
+    env:
+      appLogLevel: INFO
+      rootLogLevel: WARN
+      jvmOpts: "-XX:MaxRAMPercentage=75.0"
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+    scaling:
+      min: "2"
+      max: "2"
+  dataseed:
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 1000m
+        memory: 1Gi
+  scheduler:
+    resources:
+      limits:
+        cpu: 600m
+        memory: 2Gi
+      requests:
+        cpu: 400m
+        memory: 1Gi
+  iaservice:
+    imageName: "iaservice"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:3d7d54949e3b65914c78e63c6d38cb2740bc8f962c5adab9ce81ff3ca1145b92"
+    containerPort: "8090"
+    serviceType: ClusterIP
+    servicePort: "443"
+    debugPort: "9090"
+    env:
+      appLogLevel: INFO
+      rootLogLevel: WARN
+      jvmOpts: ""
+      javaXms: "2048M"
+      javaXmx: "2048M"
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 3Gi
+      requests:
+        cpu: 400m
+        memory: 3Gi
+    scaling:
+      min: "2"
+      max: "2"
+  iarisk:
+    imageName: "ssprisk-svc"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:c903a084acc70b8c39cea9c13ec87d35329a51f1fd46b1ed64221f63b69da9e4"
+    podReplicaCount: "2"
+    containerPort: "8088"
+    serviceType: ClusterIP
+    servicePort: "443"
+    debugPort: "9088"
+    env:
+      appLogLevel: INFO
+      rootLogLevel: WARN
+      jvmOpts: ""
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+    scaling:
+      min: "2"
+      max: "2"
+  authMgr:
+    imageName: "authmgr"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:7f6579b8eddcdd2235dd8d38b6cd455fa9aa3cad056702adc2c0c70fe17aab35"
+    podReplicaCount: "2"
+    containerPort: "8086"
+    serviceType: ClusterIP
+    servicePort: "443"
+    debugPort: "9086"
+    env:
+      appLogLevel: INFO
+      rootLogLevel: WARN
+      jvmOpts: ""
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 1000m
+        memory: 1Gi
+    scaling:
+      min: "2"
+      max: "2"
+  adminconsole:
+    imageName: "authhub-adminconsole"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:5542c6abc421aac42f2a3c88ccd35409e3878b05500191c965cfa5a7fd879bc2"
+    podReplicaCount: "2"
+    containerPort: "3010"
+    serviceType: ClusterIP
+    servicePort: "443"
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 400m
+        memory: 1Gi
+    scaling:
+      min: "2"
+      max: "2"
+  selfserviceconsole:
+    imageName: "authhub-selfserviceconsole"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:7543c0452912a771d8278b9c1a6eaee63f25eb2d2b3608fd02868123f06ad438"
+    podReplicaCount: "2"
+    containerPort: "3030"
+    serviceType: ClusterIP
+    servicePort: "443"
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 400m
+        memory: 1Gi
+    scaling:
+      min: "2"
+      max: "2"
+  signin:
+    imageName: "authhub-signin"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:e152bbd33057311bc6d18e927eb043e2fb2cae0276b1f15a9fbae16fcf7837d6"
+    podReplicaCount: "2"
+    containerPort: "3000"
+    serviceType: ClusterIP
+    servicePort: "443"
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 400m
+        memory: 1Gi
+    scaling:
+      min: "2"
+      max: "2"
+  signinLegacy:
+    imageName: "authhub-signin-legacy"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:3aafe21c5013b62ee3507bb470a2320818fa2173c1d0a6e439d055eebe8be26c"
+  opa:
+    imageName: "opa"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:365679c29b4cf648fb20d88e71057b45a6f3062f76c15f57f60a3beb081e4304"
+    podReplicaCount: "2"
+    containerPort: "8181"
+    serviceType: ClusterIP
+    servicePort: "443"
+    resources:
+      limits:
+        cpu: 600m
+        memory: 1Gi
+      requests:
+        cpu: 400m
+        memory: 1Gi
+    scaling:
+      min: "2"
+      max: "2"
+    args:
+      logLevel: error
+      logFormat: json
+      authzResource: download
+      pollingMinDelay: 30
+      pollingMaxDelay: 60
+    audit:
+      success: false
+  swagger:
+    imageName: "authswagger"
+    imageTag: 3.4.2.1051
+    imageDigest: "sha256:5be5f0e664eca4a4204bb394892160e0a6eed59fd659124f3ee494766df54b5e"
+    podReplicaCount: "1"
+    containerPort: "8087"
+    serviceType: ClusterIP
+    servicePort: "443"
+    resources:
+      limits:
+        cpu: 400m
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+#additional labels for Pods and Deployments
+additionalLabels: {}
+additionalAnnotations: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+sizing:
+  demo:
+    db:
+      maxPoolSizeRead: "10"
+      maxPoolSizeWrite: "10"
+      minIdleSize: "3"
+    resources:
+      limits:
+        cpu: 600m
+        memory: 1Gi
+      requests:
+        cpu: 400m
+        memory: 1Gi
+    scaling:
+      min: 1
+      max: 1
+  production:
+    resources:
+      limits:
+        cpu: 2000m
+        memory: 2Gi
+      requests:
+        cpu: 1000m
+        memory: 1Gi
+    small:
+      scaling:
+        min: 2
+        max: 2
+    medium:
+      scaling:
+        min: 2
+        max: 6
+    large:
+      scaling:
+        min: 2
+        max: 11

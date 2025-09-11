@@ -12,8 +12,45 @@ global:
           -XX:InitialRAMPercentage=30
           -XX:MaxMetaspaceSize=256m
           -XX:+ExitOnOutOfMemoryError
-
+   
 ssp:
+#   featureFlags:
+#     dataseed:
+#       enabled: false
+#       skipSchemaInit: false
+#       logLevel: INFO
+#     policyupdatecheck:
+#       enabled: false
+#     scheduler:
+#       enabled: false
+#     # DONOT REMOVE THIS FLAG. THIS IS BEING USED IN AUTHENTICATION FLOW TO DETERMINE IF THE SSPRISK SERVICE IS DEPLOYED
+#     iarisk:
+#       enabled: false
+#     adminconsole:
+#       enabled: false
+#     systemconsole:
+#       enabled: false
+#     selfserviceconsole:
+#       enabled: false
+#     swagger:
+#       enabled: false
+#     uiframe:
+#       option: "UNSET"
+#     custommetrics:
+#       enabled: false
+#     signinSupportsLegacyBrowser:
+#       enabled: false
+#     availabilityMetrics:
+#       enabled: false
+#       maxConnectionTimeoutInSecs: 300
+#     customLocationData:
+#       enabled: false
+#     idbridge:
+#       enabled: false
+#     riskpolicies:
+#       enabled: false
+#     onBehalfOfPrivilegedOperations:
+#       enabled: false
   # ---- JVM services with request==limit (add headroom + jvmOpts) ----
   deployment:
     size: demo

@@ -5,7 +5,7 @@
 # Last Modification: August 2023
 
 DIRNAME="$(cd "${BASH_SOURCE[0]%/*}"; pwd)"
-source ${DIRNAME}/0.gks_env_release.sh
+source ${DIRNAME}/0.gks_env.sh
 
 NC="\033[0m"
 
