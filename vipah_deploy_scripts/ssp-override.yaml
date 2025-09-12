@@ -133,7 +133,10 @@ factor:
       memory: 3Gi
     limits:
       memory: 4Gi
-
+    podReplicaCount: "1"
+    scaling:
+      min: "1"
+      max: "1"
 geolocation:
   env:
     jvmOpts: >-
@@ -154,7 +157,10 @@ geolocation:
       memory: 3Gi
     limits:
       memory: 4Gi
-
+    podReplicaCount: "1"
+    scaling:
+      min: "1"
+      max: "1"
 iarisk:
   env:
     jvmOpts: >-
@@ -175,7 +181,10 @@ iarisk:
       memory: 3Gi
     limits:
       memory: 4Gi
-
+    podReplicaCount: "1"
+    scaling:
+      min: "1"
+      max: "1"
 scheduler:
   env:
     jvmOpts: >-
@@ -196,7 +205,10 @@ scheduler:
       memory: 2Gi
     limits:
       memory: 4Gi
-
+    podReplicaCount: "1"
+    scaling:
+      min: "1"
+      max: "1"
 signin:
   env:
     jvmOpts: >-
@@ -217,7 +229,10 @@ signin:
       memory: 3Gi
     limits:
       memory: 4Gi
-
+    podReplicaCount: "1"
+    scaling:
+      min: "1"
+      max: "1"
 admin:
   env:
     jvmOpts: >-
@@ -238,7 +253,10 @@ admin:
       memory: 3Gi
     limits:
       memory: 4Gi
-
+    podReplicaCount: "1"
+    scaling:
+      min: "1"
+      max: "1"
 azserver:
   env:
     jvmOpts: >-
@@ -259,7 +277,10 @@ azserver:
       memory: 3Gi
     limits:
       memory: 4Gi
-
+    podReplicaCount: "1"
+    scaling:
+      min: "1"
+      max: "1"
 identity:
   env:
     jvmOpts: >-
@@ -280,7 +301,10 @@ identity:
       memory: 3Gi
     limits:
       memory: 4Gi
-
+    podReplicaCount: "1"
+    scaling:
+      min: "1"
+      max: "1"
 authMgr:
   env:
     jvmOpts: >-
@@ -301,7 +325,10 @@ authMgr:
       memory: 3Gi
     limits:
       memory: 4Gi
-
+    podReplicaCount: "1"
+    scaling:
+      min: "1"
+      max: "1"
 iaservice:
   env:
     jvmOpts: >-
@@ -322,7 +349,10 @@ iaservice:
       memory: 4Gi
     limits:
       memory: 4Gi
-
+    podReplicaCount: "1"
+    scaling:
+      min: "1"
+      max: "1"
 #   featureFlags:
 #     dataseed:
 #       enabled: false
