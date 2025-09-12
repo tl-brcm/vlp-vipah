@@ -113,242 +113,242 @@ ssp:
     scaling:
       min: "1"
       max: "1"
-factor:
-  env:
-    jvmOpts: >-
-      -XX:+UseContainerSupport
-      -XX:MaxRAMPercentage=35
-      -XX:InitialRAMPercentage=8
-      -XX:MaxMetaspaceSize=256m
-      -XX:ReservedCodeCacheSize=160m
-      -XX:MaxDirectMemorySize=512m
-      -Dio.netty.maxDirectMemory=512m
-      -XX:+ExitOnOutOfMemoryError
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=/tmp
-      -XX:+UseG1GC
-      -XX:MaxGCPauseMillis=200
-  resources:
-    requests:
-      memory: 3Gi
-    limits:
-      memory: 4Gi
+  factor:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=35
+        -XX:InitialRAMPercentage=8
+        -XX:MaxMetaspaceSize=256m
+        -XX:ReservedCodeCacheSize=160m
+        -XX:MaxDirectMemorySize=512m
+        -Dio.netty.maxDirectMemory=512m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/tmp
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=200
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 4Gi
     podReplicaCount: "1"
     scaling:
       min: "1"
       max: "1"
-geolocation:
-  env:
-    jvmOpts: >-
-      -XX:+UseContainerSupport
-      -XX:MaxRAMPercentage=35
-      -XX:InitialRAMPercentage=8
-      -XX:MaxMetaspaceSize=256m
-      -XX:ReservedCodeCacheSize=160m
-      -XX:MaxDirectMemorySize=512m
-      -Dio.netty.maxDirectMemory=512m
-      -XX:+ExitOnOutOfMemoryError
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=/tmp
-      -XX:+UseG1GC
-      -XX:MaxGCPauseMillis=200
-  resources:
-    requests:
-      memory: 3Gi
-    limits:
-      memory: 4Gi
+  geolocation:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=35
+        -XX:InitialRAMPercentage=8
+        -XX:MaxMetaspaceSize=256m
+        -XX:ReservedCodeCacheSize=160m
+        -XX:MaxDirectMemorySize=512m
+        -Dio.netty.maxDirectMemory=512m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/tmp
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=200
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 4Gi
     podReplicaCount: "1"
     scaling:
       min: "1"
       max: "1"
-iarisk:
-  env:
-    jvmOpts: >-
-      -XX:+UseContainerSupport
-      -XX:MaxRAMPercentage=35
-      -XX:InitialRAMPercentage=8
-      -XX:MaxMetaspaceSize=256m
-      -XX:ReservedCodeCacheSize=160m
-      -XX:MaxDirectMemorySize=512m
-      -Dio.netty.maxDirectMemory=512m
-      -XX:+ExitOnOutOfMemoryError
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=/tmp
-      -XX:+UseG1GC
-      -XX:MaxGCPauseMillis=200
-  resources:
-    requests:
-      memory: 3Gi
-    limits:
-      memory: 4Gi
+  iarisk:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=35
+        -XX:InitialRAMPercentage=8
+        -XX:MaxMetaspaceSize=256m
+        -XX:ReservedCodeCacheSize=160m
+        -XX:MaxDirectMemorySize=512m
+        -Dio.netty.maxDirectMemory=512m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/tmp
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=200
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 4Gi
     podReplicaCount: "1"
     scaling:
       min: "1"
       max: "1"
-scheduler:
-  env:
-    jvmOpts: >-
-      -XX:+UseContainerSupport
-      -XX:MaxRAMPercentage=35
-      -XX:InitialRAMPercentage=8
-      -XX:MaxMetaspaceSize=256m
-      -XX:ReservedCodeCacheSize=160m
-      -XX:MaxDirectMemorySize=512m
-      -Dio.netty.maxDirectMemory=512m
-      -XX:+ExitOnOutOfMemoryError
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=/tmp
-      -XX:+UseG1GC
-      -XX:MaxGCPauseMillis=200
-  resources:
-    requests:
-      memory: 2Gi
-    limits:
-      memory: 4Gi
+  scheduler:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=35
+        -XX:InitialRAMPercentage=8
+        -XX:MaxMetaspaceSize=256m
+        -XX:ReservedCodeCacheSize=160m
+        -XX:MaxDirectMemorySize=512m
+        -Dio.netty.maxDirectMemory=512m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/tmp
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=200
+    resources:
+      requests:
+        memory: 2Gi
+      limits:
+        memory: 4Gi
     podReplicaCount: "1"
     scaling:
       min: "1"
       max: "1"
-signin:
-  env:
-    jvmOpts: >-
-      -XX:+UseContainerSupport
-      -XX:MaxRAMPercentage=35
-      -XX:InitialRAMPercentage=8
-      -XX:MaxMetaspaceSize=256m
-      -XX:ReservedCodeCacheSize=160m
-      -XX:MaxDirectMemorySize=512m
-      -Dio.netty.maxDirectMemory=512m
-      -XX:+ExitOnOutOfMemoryError
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=/tmp
-      -XX:+UseG1GC
-      -XX:MaxGCPauseMillis=200
-  resources:
-    requests:
-      memory: 3Gi
-    limits:
-      memory: 4Gi
+  signin:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=35
+        -XX:InitialRAMPercentage=8
+        -XX:MaxMetaspaceSize=256m
+        -XX:ReservedCodeCacheSize=160m
+        -XX:MaxDirectMemorySize=512m
+        -Dio.netty.maxDirectMemory=512m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/tmp
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=200
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 4Gi
     podReplicaCount: "1"
     scaling:
       min: "1"
       max: "1"
-admin:
-  env:
-    jvmOpts: >-
-      -XX:+UseContainerSupport
-      -XX:MaxRAMPercentage=35
-      -XX:InitialRAMPercentage=8
-      -XX:MaxMetaspaceSize=256m
-      -XX:ReservedCodeCacheSize=160m
-      -XX:MaxDirectMemorySize=512m
-      -Dio.netty.maxDirectMemory=512m
-      -XX:+ExitOnOutOfMemoryError
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=/tmp
-      -XX:+UseG1GC
-      -XX:MaxGCPauseMillis=200
-  resources:
-    requests:
-      memory: 3Gi
-    limits:
-      memory: 4Gi
+  admin:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=35
+        -XX:InitialRAMPercentage=8
+        -XX:MaxMetaspaceSize=256m
+        -XX:ReservedCodeCacheSize=160m
+        -XX:MaxDirectMemorySize=512m
+        -Dio.netty.maxDirectMemory=512m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/tmp
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=200
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 4Gi
     podReplicaCount: "1"
     scaling:
       min: "1"
       max: "1"
-azserver:
-  env:
-    jvmOpts: >-
-      -XX:+UseContainerSupport
-      -XX:MaxRAMPercentage=35
-      -XX:InitialRAMPercentage=8
-      -XX:MaxMetaspaceSize=256m
-      -XX:ReservedCodeCacheSize=160m
-      -XX:MaxDirectMemorySize=512m
-      -Dio.netty.maxDirectMemory=512m
-      -XX:+ExitOnOutOfMemoryError
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=/tmp
-      -XX:+UseG1GC
-      -XX:MaxGCPauseMillis=200
-  resources:
-    requests:
-      memory: 3Gi
-    limits:
-      memory: 4Gi
+  azserver:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=35
+        -XX:InitialRAMPercentage=8
+        -XX:MaxMetaspaceSize=256m
+        -XX:ReservedCodeCacheSize=160m
+        -XX:MaxDirectMemorySize=512m
+        -Dio.netty.maxDirectMemory=512m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/tmp
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=200
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 4Gi
     podReplicaCount: "1"
     scaling:
       min: "1"
       max: "1"
-identity:
-  env:
-    jvmOpts: >-
-      -XX:+UseContainerSupport
-      -XX:MaxRAMPercentage=35
-      -XX:InitialRAMPercentage=8
-      -XX:MaxMetaspaceSize=256m
-      -XX:ReservedCodeCacheSize=160m
-      -XX:MaxDirectMemorySize=512m
-      -Dio.netty.maxDirectMemory=512m
-      -XX:+ExitOnOutOfMemoryError
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=/tmp
-      -XX:+UseG1GC
-      -XX:MaxGCPauseMillis=200
-  resources:
-    requests:
-      memory: 3Gi
-    limits:
-      memory: 4Gi
+  identity:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=35
+        -XX:InitialRAMPercentage=8
+        -XX:MaxMetaspaceSize=256m
+        -XX:ReservedCodeCacheSize=160m
+        -XX:MaxDirectMemorySize=512m
+        -Dio.netty.maxDirectMemory=512m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/tmp
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=200
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 4Gi
     podReplicaCount: "1"
     scaling:
       min: "1"
       max: "1"
-authMgr:
-  env:
-    jvmOpts: >-
-      -XX:+UseContainerSupport
-      -XX:MaxRAMPercentage=35
-      -XX:InitialRAMPercentage=8
-      -XX:MaxMetaspaceSize=256m
-      -XX:ReservedCodeCacheSize=160m
-      -XX:MaxDirectMemorySize=512m
-      -Dio.netty.maxDirectMemory=512m
-      -XX:+ExitOnOutOfMemoryError
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=/tmp
-      -XX:+UseG1GC
-      -XX:MaxGCPauseMillis=200
-  resources:
-    requests:
-      memory: 3Gi
-    limits:
-      memory: 4Gi
+  authMgr:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=35
+        -XX:InitialRAMPercentage=8
+        -XX:MaxMetaspaceSize=256m
+        -XX:ReservedCodeCacheSize=160m
+        -XX:MaxDirectMemorySize=512m
+        -Dio.netty.maxDirectMemory=512m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/tmp
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=200
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 4Gi
     podReplicaCount: "1"
     scaling:
       min: "1"
       max: "1"
-iaservice:
-  env:
-    jvmOpts: >-
-      -XX:+UseContainerSupport
-      -Xmx2g
-      -Xms512m
-      -XX:MaxMetaspaceSize=256m
-      -XX:ReservedCodeCacheSize=160m
-      -XX:MaxDirectMemorySize=512m
-      -Dio.netty.maxDirectMemory=512m
-      -XX:+ExitOnOutOfMemoryError
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=/tmp
-      -XX:+UseG1GC
-      -XX:MaxGCPauseMillis=200
-  resources:
-    requests:
-      memory: 4Gi
-    limits:
-      memory: 4Gi
+  iaservice:
+    env:
+      jvmOpts: >-
+        -XX:+UseContainerSupport
+        -Xmx2g
+        -Xms512m
+        -XX:MaxMetaspaceSize=256m
+        -XX:ReservedCodeCacheSize=160m
+        -XX:MaxDirectMemorySize=512m
+        -Dio.netty.maxDirectMemory=512m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/tmp
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=200
+    resources:
+      requests:
+        memory: 4Gi
+      limits:
+        memory: 4Gi
     podReplicaCount: "1"
     scaling:
       min: "1"
