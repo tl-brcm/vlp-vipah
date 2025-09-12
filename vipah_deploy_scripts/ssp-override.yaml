@@ -15,7 +15,7 @@ global:
    
 ssp:
   deployment:
-    size: custom
+    size: demo
   availability:
     resources:
       requests:
