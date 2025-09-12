@@ -25,7 +25,7 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   dbInitializer:
     resources:
@@ -36,7 +36,7 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   dataseed:
     resources:
@@ -47,7 +47,7 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   vaultSecretsInitializer:
     resources:
@@ -58,7 +58,7 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   geolocation:
     resources:
@@ -69,7 +69,7 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   uiHelperSvc:
     resources:
@@ -80,7 +80,7 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   opa:
     resources:
@@ -91,7 +91,7 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
   adminconsole:
     resources:
       requests:
@@ -101,7 +101,7 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   selfserviceconsole:
     resources:
@@ -112,17 +112,9 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   factor:
-    # Was req=2Gi / limit=2Gi with -Xmx1Gi (too tight, native + metaspace can OOM)
-    env:
-      jvmOpts: >-
-        -XX:+UseContainerSupport
-        -XX:MaxRAMPercentage=60
-        -XX:InitialRAMPercentage=30
-        -XX:MaxMetaspaceSize=256m
-        -XX:+ExitOnOutOfMemoryError
     resources:
       requests:
         memory: 3Gi
@@ -131,16 +123,9 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   geolocation:
-    env:
-      jvmOpts: >-
-        -XX:+UseContainerSupport
-        -XX:MaxRAMPercentage=60
-        -XX:InitialRAMPercentage=30
-        -XX:MaxMetaspaceSize=256m
-        -XX:+ExitOnOutOfMemoryError
     resources:
       requests:
         memory: 3Gi
@@ -149,16 +134,9 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   iarisk:
-    env:
-      jvmOpts: >-
-        -XX:+UseContainerSupport
-        -XX:MaxRAMPercentage=60
-        -XX:InitialRAMPercentage=30
-        -XX:MaxMetaspaceSize=256m
-        -XX:+ExitOnOutOfMemoryError
     resources:
       requests:
         memory: 3Gi
@@ -167,16 +145,9 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   scheduler:
-    env:
-      jvmOpts: >-
-        -XX:+UseContainerSupport
-        -XX:MaxRAMPercentage=60
-        -XX:InitialRAMPercentage=30
-        -XX:MaxMetaspaceSize=256m
-        -XX:+ExitOnOutOfMemoryError
     resources:
       requests:
         memory: 2Gi
@@ -185,18 +156,10 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
 
   signin:
-    # Already had MaxRAMPercentage=75 (a bit aggressive); align with default
-    env:
-      jvmOpts: >-
-        -XX:+UseContainerSupport
-        -XX:MaxRAMPercentage=60
-        -XX:InitialRAMPercentage=30
-        -XX:MaxMetaspaceSize=256m
-        -XX:+ExitOnOutOfMemoryError
     resources:
       requests:
         memory: 3Gi
@@ -205,17 +168,9 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   admin:
-    # Already had MaxRAMPercentage=75 (a bit aggressive); align with default
-    env:
-      jvmOpts: >-
-        -XX:+UseContainerSupport
-        -XX:MaxRAMPercentage=60
-        -XX:InitialRAMPercentage=30
-        -XX:MaxMetaspaceSize=256m
-        -XX:+ExitOnOutOfMemoryError
     resources:
       requests:
         memory: 3Gi
@@ -224,17 +179,10 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   # ---- JVM services that already had 1Gi/2Gi: keep sizing, add jvm flags ----
   azserver:
-    env:
-      jvmOpts: >-
-        -XX:+UseContainerSupport
-        -XX:MaxRAMPercentage=60
-        -XX:InitialRAMPercentage=30
-        -XX:MaxMetaspaceSize=256m
-        -XX:+ExitOnOutOfMemoryError
     resources:
       requests:
         memory: 3Gi
@@ -243,16 +191,9 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   identity:
-    env:
-      jvmOpts: >-
-        -XX:+UseContainerSupport
-        -XX:MaxRAMPercentage=60
-        -XX:InitialRAMPercentage=30
-        -XX:MaxMetaspaceSize=256m
-        -XX:+ExitOnOutOfMemoryError
     resources:
       requests:
         memory: 3Gi
@@ -261,16 +202,9 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
   authMgr:
-    env:
-      jvmOpts: >-
-        -XX:+UseContainerSupport
-        -XX:MaxRAMPercentage=60
-        -XX:InitialRAMPercentage=30
-        -XX:MaxMetaspaceSize=256m
-        -XX:+ExitOnOutOfMemoryError
     resources:
       requests:
         memory: 3Gi
@@ -279,7 +213,7 @@ ssp:
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
   # ---- iaservice had Xms/Xmx=2Gi with req=3Gi/limit=3Gi: give more headroom ----
   iaservice:
     # Keep your explicit Xmx=2Gi; raise limit so native/metaspace/thread stacks have space
@@ -289,14 +223,10 @@ ssp:
       limits:
         memory: 4Gi
     env:
-      # You can keep javaXms/javaXmx as-is; add safety flags
-      jvmOpts: >-
-        -XX:+UseContainerSupport
-        -XX:+ExitOnOutOfMemoryError
     podReplicaCount: "1"
     scaling:
       min: "1"
-      max: "2"
+      max: "1"
 
 #   featureFlags:
 #     dataseed:
