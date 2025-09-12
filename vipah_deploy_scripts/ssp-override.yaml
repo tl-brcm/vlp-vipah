@@ -115,6 +115,8 @@ ssp:
       max: "1"
 
   factor:
+    # Was req=2Gi / limit=2Gi with -Xmx1Gi (too tight, native + metaspace can OOM)
+    env:
     resources:
       requests:
         memory: 3Gi
@@ -126,6 +128,7 @@ ssp:
       max: "1"
 
   geolocation:
+    env:
     resources:
       requests:
         memory: 3Gi
@@ -137,6 +140,7 @@ ssp:
       max: "1"
 
   iarisk:
+    env:
     resources:
       requests:
         memory: 3Gi
@@ -148,6 +152,7 @@ ssp:
       max: "1"
 
   scheduler:
+    env:
     resources:
       requests:
         memory: 2Gi
@@ -160,6 +165,8 @@ ssp:
 
 
   signin:
+    # Already had MaxRAMPercentage=75 (a bit aggressive); align with default
+    env:
     resources:
       requests:
         memory: 3Gi
@@ -171,6 +178,8 @@ ssp:
       max: "1"
 
   admin:
+    # Already had MaxRAMPercentage=75 (a bit aggressive); align with default
+    env:
     resources:
       requests:
         memory: 3Gi
@@ -183,6 +192,7 @@ ssp:
 
   # ---- JVM services that already had 1Gi/2Gi: keep sizing, add jvm flags ----
   azserver:
+    env:
     resources:
       requests:
         memory: 3Gi
@@ -194,6 +204,7 @@ ssp:
       max: "1"
 
   identity:
+    env:
     resources:
       requests:
         memory: 3Gi
@@ -205,6 +216,7 @@ ssp:
       max: "1"
 
   authMgr:
+    env:
     resources:
       requests:
         memory: 3Gi
