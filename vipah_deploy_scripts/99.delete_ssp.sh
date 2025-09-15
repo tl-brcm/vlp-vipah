@@ -83,4 +83,4 @@ print_color "default" ""
 print_color "green" "####################################################"
 
 helm uninstall ingress-nginx -n ingress
-kubectl delete ns ingress   
+kubectl delete ns ingress

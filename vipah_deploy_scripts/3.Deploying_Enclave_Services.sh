@@ -1,21 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Description: Deploy Enclave Service (Monitoring and Auditing)
 # Created by: B.K. Rhim
 # Last Modification: August 2023
 
 DIRNAME="$(cd "${BASH_SOURCE[0]%/*}"; pwd)"
-source ${DIRNAME}/0.gks_env_release.sh
+source ${DIRNAME}/0.gks_env.sh
 
 NC="\033[0m"
 
 function print_color(){
 
   case $1 in
-    "green") COLOR="\033[0;32m" ;;
-    "red")  COLOR="\033[0;31m" ;;
-    "blue")  COLOR="\033[0;34m" ;;
-    *) COLOR="\033[0m" ;;
+    "green") COLOR="\033[0;32m" ;; 
+    "red")  COLOR="\033[0;31m" ;; 
+    "blue")  COLOR="\033[0;34m" ;; 
+    *) COLOR="\033[0m" ;; 
   esac
   echo -e "${COLOR} $2 ${NC}"
 }
@@ -46,14 +46,14 @@ do
 			grafana_operator_version="4.9.25"
 			grafana_image_tag_version="9.1.0-debian-11-r0"
                         break
-                        ;;
+                        ;; 
                 2) print_color "green" "Upgrade elastic operator 3.0.0, Elastic 8.2.1, Kibana 8.2.0, Prometheuse 8.1."
                         enclave_service_version="upgrade"
 			elastic_operator_version="3.0.0"
                         break
-                        ;;
+                        ;; 
                 *) continue
-                        ;;
+                        ;; 
         esac
 done
 
@@ -172,7 +172,7 @@ print_color "default" ""
 
 # Deploy Kibana Secret
 
-kubectl delete secret tls logging-general-tls -n logging
+kubectl delete secret logging-general-tls -n logging
 
 kubectl create secret tls logging-general-tls \
 --cert "${CERTFILE}" \
@@ -181,7 +181,7 @@ kubectl create secret tls logging-general-tls \
 # Kibana Yaml start
 #kubectl apply -f Kibana_V8.2.0.yaml
 
-cat <<EOF | kubectl apply -n logging -f -
+cat <<EOF | kubectl apply -n logging -f - 
 apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
@@ -239,7 +239,7 @@ print_color "green" "Export Kibana Service"
 
 # Kibana service expose yaml start
 
-cat <<EOF | kubectl apply -n logging -f -
+cat <<EOF | kubectl apply -n logging -f - 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -327,17 +327,15 @@ kubectl get pods -n monitoring
 # Deploy Grafana
 # Create tls secret for SSL
 
-kubectl delete secret tls monitoring-general-tls  -n monitoring
+kubectl delete secret monitoring-general-tls  -n monitoring
 
 kubectl create secret tls monitoring-general-tls \
 --cert "${CERTFILE}" \
 --key "${KEYFILE}" -n monitoring
 
-# Deploy Grafana 2.7.3
 helm install grafana-operator bitnami/grafana-operator -n monitoring \
 --set  operator.containerSecurityContext.readOnlyRootFilesystem=true \
 --set grafana.image.repository=bitnami/grafana \
-# --set grafana.image.tag=${grafana_image_tag_version} \
 --set grafana.config.security.admin_password=prom-operator \
 --set grafana.ingress.enabled=true \
 --set grafana.ingress.ingressClassName=nginx \
@@ -346,26 +344,29 @@ helm install grafana-operator bitnami/grafana-operator -n monitoring \
 --set grafana.ingress.tlsSecret=monitoring-general-tls \
 --version=${grafana_operator_version} \
 --timeout='20m' --wait
-
+# --set grafana.image.tag=${grafana_image_tag_version} 
 # Configure Grafana to use the local Prometheus by creating a Grafana DataSource Object
 
-cat <<EOF | kubectl apply -n monitoring -f -
-  apiVersion: integreatly.org/v1alpha1
-  kind: GrafanaDataSource
+cat <<EOF | kubectl apply -n monitoring -f - 
+  apiVersion: grafana.integreatly.org/v1beta1
+  kind: GrafanaDatasource
   metadata:
     name: grafana-datasource
+    namespace: monitoring
   spec:
-    name: grafana-datasource.yaml
-    datasources:
-      - name: Prometheus
-        type: prometheus
-        version: 1
-        access: proxy
-        editable: true
-        isDefault: true
-        url: 'http://prometheus-operator-kube-p-prometheus.monitoring.svc:9090'
-        jsonData:
-          timeInterval: 5s
+    # Tell the operator which Grafana instance should own this datasource
+    instanceSelector:
+      matchLabels:
+        grafana.integreatly.org/instance: grafana   # change if your Grafana CR name is different
+    datasource:
+      name: Prometheus
+      type: prometheus
+      access: proxy
+      url: http://prometheus-operator-kube-p-prometheus.monitoring.svc:9090
+      isDefault: true
+      editable: true
+      jsonData:
+        timeInterval: 5s
 EOF
 
 # Delete the existing Grafana Pod so that the monitoring namepsace configuration is read in

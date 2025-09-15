@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Description: Deploy VIP AuthHub Service
 # Created by: B.K. Rhim
@@ -12,10 +12,10 @@ NC="\033[0m"
 function print_color(){
 
   case $1 in
-    "green") COLOR="\033[0;32m" ;;
-    "red")  COLOR="\033[0;31m" ;;
-    "blue")  COLOR="\033[0;34m" ;;
-    *) COLOR="\033[0m" ;;
+    "green") COLOR="\033[0;32m" ;; 
+    "red")  COLOR="\033[0;31m" ;; 
+    "blue")  COLOR="\033[0;34m" ;; 
+    *) COLOR="\033[0m" ;; 
   esac
   echo -e "${COLOR} $2 ${NC}"
 }
@@ -48,15 +48,15 @@ do
                         ssp_version=$SSP_VERSION_FULL
                         ssp_data_version=$SSP_DATA_VERSION_FULL
                         break
-                        ;;
+                        ;; 
                 2) print_color "green" "Upgrade VIP Auth Hub $SSP_VERSION Upgrade"
                         ssp_action="upgrade"
                         ssp_version=$SSP_VERSION_FULL
                         ssp_data_version=$SSP_DATA_VERSION_FULL
                         break
-                        ;;
+                        ;; 
                 *) continue
-                        ;;
+                        ;; 
         esac
 done
 

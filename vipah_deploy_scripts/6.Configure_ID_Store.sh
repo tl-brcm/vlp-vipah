@@ -79,4 +79,3 @@ print_color "red" "Complete ID Store setup.. Please access the Sample App and va
 print_color "red" "Sample App URL: https://${SA_FQDN}/sample-app/ "
 print_color "default" ""
 print_color "green" "####################################################"
-

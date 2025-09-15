@@ -30,8 +30,17 @@ MASTER_IP=$(nmap -p 6443 --open ${SUBNET} -n | awk '/Nmap scan report for/{print
 
 if [ -z "$MASTER_IP" ]; then
   echo "Could not find a K3s master node on the network."
-  echo "Please ensure the master node is running and accessible on port 6443."
-  exit 1
+  read -p "Would you like to enter the master IP manually? (y/n): " choice
+  if [ "$choice" == "y" ]; then
+    read -p "Enter the master IP address: " MASTER_IP
+    if [ -z "$MASTER_IP" ]; then
+      echo "Master IP cannot be empty."
+      exit 1
+    fi
+  else
+    echo "Please ensure the master node is running and accessible on port 6443."
+    exit 1
+  fi
 fi
 
 echo "Found K3s master at: ${MASTER_IP}"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 
 # Description: Deploy Ingress Controller
@@ -16,10 +16,10 @@ INGRESS_VERSION_OLD="4.0.16"
 function print_color(){
 
   case $1 in
-    "green") COLOR="\033[0;32m" ;;
-    "red")  COLOR="\033[0;31m" ;;
-    "blue")  COLOR="\033[0;34m" ;;
-    *) COLOR="\033[0m" ;;
+    "green") COLOR="\033[0;32m" ;; 
+    "red")  COLOR="\033[0;31m" ;; 
+    "blue")  COLOR="\033[0;34m" ;; 
+    *) COLOR="\033[0m" ;; 
   esac
   echo -e "${COLOR} $2 ${NC}"
 }
@@ -33,7 +33,7 @@ do
         print_color "default" ""
         print_color "red"  "  Deploy Ingress Controller "
         print_color "default" ""
-        print_color "green" "1. Ingress ${INGRESS_VERSION_NEW} deploy  "    
+        print_color "green" "1. Ingress ${INGRESS_VERSION_NEW} deploy  "
         print_color "green" "2. Ingress ${INGRESS_VERSION_OLD} deploy "
         print_color "blue" "3. Upgrade Ingress ${INGRESS_VERSION_NEW} "
 
@@ -58,15 +58,15 @@ do
                         ingress_version="${INGRESS_VERSION_OLD}"
 			ingress_name_space="ingress"
                         break
-                        ;;
+                        ;; 
                 3) print_color "green" "Upgrade Ingress ${INGRESS_VERSION_NEW}"
                         ingress_action="upgrade"
                         ingress_version="${INGRESS_VERSION_NEW}"
 			ingress_name_space="ingress"
                         break
-                        ;;
+                        ;; 
                 *) continue
-                        ;;
+                        ;; 
         esac
 done
 
@@ -76,18 +76,18 @@ then
 	kubectl create ns "${ingress_name_space}"
 
 	kubectl create secret docker-registry docker-hub-reg-pullsecret -n ${ingress_name_space} \
-	--docker-server="https://index.docker.io/v2/" \
-	--docker-username="${DOCKER_USERNAME}" \
+	--docker-server="https://index.docker.io/v2/"
+	--docker-username="${DOCKER_USERNAME}"
 	--docker-password="${DOCKER_PASSWORD}"
 
-	helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-	helm repo update
+	helM repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+	helM repo update
 
-	helm install ingress-nginx -n ${ingress_name_space} ingress-nginx/ingress-nginx \
+	helM install ingress-nginx -n ${ingress_name_space} ingress-nginx/ingress-nginx \
 	--set-string controller.config.use-forwarded-headers="true" \
 	--set imagePullSecrets[0].name=docker-hub-reg-pullsecret \
         --set controller.allowSnippetAnnotations=true \
-	--set-string controller.config.annotation-value-word-blocklist="load_module\,lua_package\,_by_lua\,location\,root\,proxy_pass\,serviceaccount\,{\,}\,\'\,\\\\" \
+	--set-string controller.config.annotation-value-word-blocklist="load_module\,lua_package\,_by_lua\,location\,root\,proxy_pass\,serviceaccount\,{\, \'\\\\\\\"}" \
         --set controller.service.externalTrafficPolicy="Local" \
         --set controller.config.annotations-risk-level=Critical \
 	--version=${ingress_version}
@@ -96,10 +96,10 @@ then
 elif [[ ( "${ingress_action}" == "upgrade" ) && ( ! -z "${ingress_version_old}" ) ]]
 then
 
-	helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-	helm repo update
+	helM repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+	helM repo update
 
-	helm get values ingress-nginx -n ingress >ingress-override.yaml
+	helM get values ingress-nginx -n ingress >ingress-override.yaml
 
         helm upgrade ingress-nginx -n ingress ingress-nginx/ingress-nginx -f ingress-override.yaml \
         --version=${ingress_version}

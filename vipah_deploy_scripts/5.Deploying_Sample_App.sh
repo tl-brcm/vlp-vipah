@@ -1,21 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Description: Deploy VIP AuthHub Service
 # Created by: B.K. Rhim
 # Last Modification: June 2023
 
 DIRNAME="$(cd "${BASH_SOURCE[0]%/*}"; pwd)"
-source ${DIRNAME}/0.gks_env_release.sh
+source ${DIRNAME}/0.gks_env.sh
 
 NC="\033[0m"
 
 function print_color(){
 
   case $1 in
-    "green") COLOR="\033[0;32m" ;;
-    "red")  COLOR="\033[0;31m" ;;
-    "blue")  COLOR="\033[0;34m" ;;
-    *) COLOR="\033[0m" ;;
+    "green") COLOR="\033[0;32m" ;; 
+    "red")  COLOR="\033[0;31m" ;; 
+    "blue")  COLOR="\033[0;34m" ;; 
+    *) COLOR="\033[0m" ;; 
   esac
   echo -e "${COLOR} $2 ${NC}"
 }
@@ -44,15 +44,15 @@ sample_app_version_old=$(helm list -n ${SA_NAMESPACE} | grep -i sample | awk '{ 
                         sample_app_action="install"
                         sample_app_version=$SSP_VERSION_FULL
                         break
-                        ;;
+                        ;; 
                 2) print_color "green" "Upgrade VIP Auth Hub Sample App $SSP_VERSION"
                         sample_app_action="upgrade"
                         sample_app_version=$SSP_VERSION_FULL
                         sample_app_version_old=$(helm list -n ${SA_NAMESPACE} | grep ${SA_RELEASENAME} | awk '{print $10}')
                         break
-                        ;;
+                        ;; 
                 *) continue
-                        ;;
+                        ;; 
         esac
 done
 
@@ -122,11 +122,11 @@ then
 	helm upgrade ${SA_RELEASENAME} ssp_helm_charts/ssp-sample-app -n ${SA_NAMESPACE} \
 	 -f sampleapp-override"-$(date +%F)".yaml \
 	--version=${sample_app_version} \
-	--timeout '20m' --wait	
+	--timeout '20m' --wait
 else
 
         print_color "red" "Sample App is not installed yet. Please install Sample App frist !!!"
-        exit 1;
+        exit 1; 
 fi
 
 

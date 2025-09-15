@@ -12,10 +12,10 @@ NC="\033[0m"
 function print_color(){
 
   case $1 in
-    "green") COLOR="\033[0;32m" ;;
-    "red")  COLOR="\033[0;31m" ;;
-    "blue")  COLOR="\033[0;34m" ;;
-    *) COLOR="\033[0m" ;;
+    "green") COLOR="\033[0;32m" ;; 
+    "red")  COLOR="\033[0;31m" ;; 
+    "blue")  COLOR="\033[0;34m" ;; 
+    *) COLOR="\033[0m" ;; 
   esac
   echo -e "${COLOR} $2 ${NC}"
 }
@@ -42,4 +42,3 @@ print_color "default" ""
 print_color "red" "LDAP Update Complete "
 print_color "default" ""
 print_color "green" "####################################################"
-
