@@ -56,6 +56,8 @@ export JAEGER_HOST="jaeger${SUFFIX}.${DOMAIN}"
 export ALERTMANAGER_HOST="alertmanager${SUFFIX}.${DOMAIN}"
 export GRAFANA_HOST="grafana${SUFFIX}.${DOMAIN}"
 
+export DOCKER_USERNAME="bkrhim1004"
+
 export SSP_DOCKER_SERVER="https://securityservices.packages.broadcom.com/"
 
 export SSP_VERSION=3.4.2

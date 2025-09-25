@@ -42,9 +42,9 @@ do
 			elastic_operator_version="3.0.0"
 			elastic_search_version="9.0.4"
 			kibana_version="9.0.4"
-			prometheus_operator_version="11.2.16"
-			grafana_operator_version="4.9.25"
-			grafana_image_tag_version="9.1.0-debian-11-r0"
+			prometheus_operator_version="8.25.6"
+			grafana_operator_version="3.7.1"
+			grafana_image_tag_version="10.3.1-debian-11-r0"
                         break
                         ;; 
                 2) print_color "green" "Upgrade elastic operator 3.0.0, Elastic 8.2.1, Kibana 8.2.0, Prometheuse 8.1."
@@ -342,9 +342,9 @@ helm install grafana-operator bitnami/grafana-operator -n monitoring \
 --set grafana.ingress.hostname=${GRAFANA_HOST} \
 --set grafana.ingress.tls=true \
 --set grafana.ingress.tlsSecret=monitoring-general-tls \
+--set grafana.image.tag=${grafana_image_tag_version} \
 --version=${grafana_operator_version} \
 --timeout='20m' --wait
-# --set grafana.image.tag=${grafana_image_tag_version} 
 # Configure Grafana to use the local Prometheus by creating a Grafana DataSource Object
 
 cat <<EOF | kubectl apply -n monitoring -f - 
@@ -357,7 +357,7 @@ cat <<EOF | kubectl apply -n monitoring -f -
     # Tell the operator which Grafana instance should own this datasource
     instanceSelector:
       matchLabels:
-        grafana.integreatly.org/instance: grafana   # change if your Grafana CR name is different
+        dashboards: "ssp-grafana"
     datasource:
       name: Prometheus
       type: prometheus
@@ -369,9 +369,25 @@ cat <<EOF | kubectl apply -n monitoring -f -
         timeInterval: 5s
 EOF
 
+cat <<EOF | kubectl apply -n monitoring -f -
+ apiVersion: grafana.integreatly.org/v1beta1
+ kind: GrafanaDashboard
+ metadata:
+   name: ssp-monitoring-dashboard
+ spec:
+   datasources:
+     - inputName: "DS_PROMETHEUS"
+       datasourceName: "Prometheus"
+   instanceSelector:
+     matchLabels:
+       dashboards: "ssp-grafana"
+   grafanaCom:
+     id: 20026
+EOF
+
 # Delete the existing Grafana Pod so that the monitoring namepsace configuration is read in
 
-kubectl delete pod -l app=grafana -n monitoring
+kubectl delete pod -l app.kubernetes.io/name=grafana-operator -n monitoring
 
 print_color "default" ""
 print_color "green" "Check the Service and Extract IP address"
@@ -394,6 +410,7 @@ IPADDRESS=$(kubectl get svc -n ingress ingress-nginx-controller | awk '{ print $
 
 # AWS 
 #IPADDRESS=$(kubectl get svc -n ingress |grep LoadBalancer | awk '{ print $4 }' | nslookup | grep -i 'Address:' | sed -n 2p | awk '{ print $2 }')
+
 
 print_color "green" "####################################################"
 print_color "default" ""
